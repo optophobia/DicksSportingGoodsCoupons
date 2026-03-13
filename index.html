@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Results</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --accent: #4ade80;
+      --accent-dim: rgba(74, 222, 128, 0.12);
+      --text: #e8e8e8;
+      --muted: #666;
+      --url: #93c5fd;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 4px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .url-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.7rem;
+      color: var(--url);
+      word-break: break-all;
+      margin-bottom: 2rem;
+      text-align: left;
+      position: relative;
+    }
+
+    .url-box::before {
+      content: '🔍 query';
+      display: block;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: #86efac;
+      border-color: #86efac;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(74,222,128,0.25);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: #555;
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    .countdown {
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .countdown span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 0.6rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: progress 5s linear forwards;
+    }
+
+    @keyframes progress {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tag">Search Redirector</div>
+    <h1>Opening <em>Google</em><br>Search Results</h1>
+    <p class="desc">
+      You will be automatically redirected to the Google search results<br>
+      for the query below in <span id="sec">5</span> seconds.
+    </p>
+
+    <div class="url-box">
+      https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx
+    </div>
+
+    <div class="btn-group">
+      <a id="go-btn" href="#" class="btn btn-primary" target="_blank" rel="noopener">
+        ↗ Open Now
+      </a>
+      <button class="btn btn-secondary" onclick="cancelRedirect()">
+        ✕ Cancel
+      </button>
+    </div>
+
+    <div class="countdown">
+      Auto-redirecting in <span id="countdown">5</span>s
+      <div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const SEARCH_QUERY = 'https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx';
+    const GOOGLE_URL = 'https://www.google.com/search?q=' + encodeURIComponent(SEARCH_QUERY);
+
+    // Set the button href
+    document.getElementById('go-btn').href = GOOGLE_URL;
+
+    // Countdown
+    let seconds = 5;
+    let cancelled = false;
+    const countEl = document.getElementById('countdown');
+
+    const interval = setInterval(() => {
+      if (cancelled) return clearInterval(interval);
+      seconds--;
+      countEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = GOOGLE_URL;
+      }
+    }, 1000);
+
+    function cancelRedirect() {
+      cancelled = true;
+      document.querySelector('.countdown').innerHTML = '<span style="color:var(--muted)">Auto-redirect cancelled.</span>';
+      document.getElementById('bar').style.animationPlayState = 'paused';
+    }
+  </script>
+</body>
+</html>
