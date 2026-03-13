@@ -33,7 +33,6 @@
       overflow: hidden;
     }
 
-    /* Animated grid background */
     body::before {
       content: '';
       position: fixed;
@@ -91,7 +90,56 @@
       font-size: 0.8rem;
       color: var(--muted);
       line-height: 1.7;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* State selector */
+    .state-selector {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .state-label {
+      display: block;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .state-select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1.25rem center;
+      transition: border-color 0.2s ease;
+    }
+
+    .state-select:focus {
+      outline: none;
+      border-color: rgba(74,222,128,0.5);
+      box-shadow: 0 0 0 2px rgba(74,222,128,0.08);
+    }
+
+    .state-select option {
+      background: #1a1a1a;
+      color: var(--text);
+    }
+
+    .state-select.selected {
+      border-color: rgba(74,222,128,0.35);
+      color: var(--accent);
     }
 
     .url-box {
@@ -105,6 +153,7 @@
       margin-bottom: 2rem;
       text-align: left;
       position: relative;
+      transition: border-color 0.3s ease;
     }
 
     .url-box::before {
@@ -115,6 +164,16 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 0.4rem;
+    }
+
+    .url-box.updated {
+      border-color: rgba(74,222,128,0.4);
+    }
+
+    .location-badge {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 500;
     }
 
     .btn-group {
@@ -150,6 +209,13 @@
       border-color: #86efac;
       transform: translateY(-1px);
       box-shadow: 0 8px 24px rgba(74,222,128,0.25);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .btn-secondary {
@@ -188,12 +254,15 @@
       height: 100%;
       background: var(--accent);
       border-radius: 2px;
-      animation: progress 5s linear forwards;
+      width: 0%;
+      transition: width 1s linear;
     }
 
-    @keyframes progress {
-      from { width: 0%; }
-      to   { width: 100%; }
+    .hint {
+      margin-top: 1.5rem;
+      font-size: 0.65rem;
+      color: var(--muted);
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -202,16 +271,73 @@
     <div class="tag">Search Redirector</div>
     <h1>Opening <em>Google</em><br>Search Results</h1>
     <p class="desc">
-      You will be automatically redirected to the Google search results<br>
-      for the query below in <span id="sec">5</span> seconds.
+      Select your state below to include your location in the search,<br>
+      then you'll be redirected automatically.
     </p>
 
-    <div class="url-box">
-      https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx
+    <div class="state-selector">
+      <label class="state-label" for="state-select">📍 Your State</label>
+      <select id="state-select" class="state-select" onchange="onStateChange()">
+        <option value="">— Select your state —</option>
+        <option value="Alabama">Alabama</option>
+        <option value="Alaska">Alaska</option>
+        <option value="Arizona">Arizona</option>
+        <option value="Arkansas">Arkansas</option>
+        <option value="California">California</option>
+        <option value="Colorado">Colorado</option>
+        <option value="Connecticut">Connecticut</option>
+        <option value="Delaware">Delaware</option>
+        <option value="Florida">Florida</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Hawaii">Hawaii</option>
+        <option value="Idaho">Idaho</option>
+        <option value="Illinois">Illinois</option>
+        <option value="Indiana">Indiana</option>
+        <option value="Iowa">Iowa</option>
+        <option value="Kansas">Kansas</option>
+        <option value="Kentucky">Kentucky</option>
+        <option value="Louisiana">Louisiana</option>
+        <option value="Maine">Maine</option>
+        <option value="Maryland">Maryland</option>
+        <option value="Massachusetts">Massachusetts</option>
+        <option value="Michigan">Michigan</option>
+        <option value="Minnesota">Minnesota</option>
+        <option value="Mississippi">Mississippi</option>
+        <option value="Missouri">Missouri</option>
+        <option value="Montana">Montana</option>
+        <option value="Nebraska">Nebraska</option>
+        <option value="Nevada">Nevada</option>
+        <option value="New Hampshire">New Hampshire</option>
+        <option value="New Jersey">New Jersey</option>
+        <option value="New Mexico">New Mexico</option>
+        <option value="New York">New York</option>
+        <option value="North Carolina">North Carolina</option>
+        <option value="North Dakota">North Dakota</option>
+        <option value="Ohio">Ohio</option>
+        <option value="Oklahoma">Oklahoma</option>
+        <option value="Oregon">Oregon</option>
+        <option value="Pennsylvania">Pennsylvania</option>
+        <option value="Rhode Island">Rhode Island</option>
+        <option value="South Carolina">South Carolina</option>
+        <option value="South Dakota">South Dakota</option>
+        <option value="Tennessee">Tennessee</option>
+        <option value="Texas">Texas</option>
+        <option value="Utah">Utah</option>
+        <option value="Vermont">Vermont</option>
+        <option value="Virginia">Virginia</option>
+        <option value="Washington">Washington</option>
+        <option value="West Virginia">West Virginia</option>
+        <option value="Wisconsin">Wisconsin</option>
+        <option value="Wyoming">Wyoming</option>
+      </select>
+    </div>
+
+    <div class="url-box" id="url-display">
+      <span id="url-text">https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx</span>
     </div>
 
     <div class="btn-group">
-      <a id="go-btn" href="#" class="btn btn-primary" target="_blank" rel="noopener">
+      <a id="go-btn" href="#" class="btn btn-primary" onclick="handleGo(event)">
         ↗ Open Now
       </a>
       <button class="btn btn-secondary" onclick="cancelRedirect()">
@@ -219,38 +345,111 @@
       </button>
     </div>
 
-    <div class="countdown">
+    <div class="countdown" id="countdown-area" style="display:none;">
       Auto-redirecting in <span id="countdown">5</span>s
       <div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
     </div>
+
+    <p class="hint" id="hint-text">Please select your state to enable the search.</p>
   </div>
 
   <script>
-    const SEARCH_QUERY = 'https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx';
-    const GOOGLE_URL = 'https://www.google.com/search?q=' + encodeURIComponent(SEARCH_QUERY);
-
-    // Set the button href
-    document.getElementById('go-btn').href = GOOGLE_URL;
-
-    // Countdown
+    const BASE_QUERY = 'https://cmm.dickssportinggoods.com/crmcdn/getoffer.aspx';
+    let currentURL = '';
     let seconds = 5;
     let cancelled = false;
-    const countEl = document.getElementById('countdown');
+    let countdownInterval = null;
+    let progressInterval = null;
+    let progressWidth = 0;
 
-    const interval = setInterval(() => {
-      if (cancelled) return clearInterval(interval);
-      seconds--;
-      countEl.textContent = seconds;
-      if (seconds <= 0) {
-        clearInterval(interval);
-        window.location.href = GOOGLE_URL;
+    function buildURL(state) {
+      const query = state ? BASE_QUERY + ' location:' + state : BASE_QUERY;
+      return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+    }
+
+    function onStateChange() {
+      const select = document.getElementById('state-select');
+      const state = select.value;
+      const urlBox = document.getElementById('url-display');
+      const urlText = document.getElementById('url-text');
+      const goBtn = document.getElementById('go-btn');
+      const hint = document.getElementById('hint-text');
+
+      // Reset any running countdown
+      cancelRedirect(true);
+
+      if (state) {
+        currentURL = buildURL(state);
+        const displayQuery = BASE_QUERY + ' <span class="location-badge">location:' + state + '</span>';
+        urlText.innerHTML = displayQuery;
+        urlBox.classList.add('updated');
+        select.classList.add('selected');
+        goBtn.removeAttribute('disabled');
+        hint.textContent = 'State selected — redirecting in 5 seconds.';
+        startCountdown();
+      } else {
+        currentURL = '';
+        urlText.innerHTML = BASE_QUERY;
+        urlBox.classList.remove('updated');
+        select.classList.remove('selected');
+        goBtn.setAttribute('disabled', 'disabled');
+        hint.textContent = 'Please select your state to enable the search.';
+        document.getElementById('countdown-area').style.display = 'none';
       }
-    }, 1000);
+    }
 
-    function cancelRedirect() {
+    function startCountdown() {
+      cancelled = false;
+      seconds = 5;
+      progressWidth = 0;
+
+      const countdownArea = document.getElementById('countdown-area');
+      const countEl = document.getElementById('countdown');
+      const bar = document.getElementById('bar');
+
+      countdownArea.style.display = 'block';
+      countEl.textContent = seconds;
+      bar.style.width = '0%';
+
+      // Animate progress bar smoothly
+      const totalMs = 5000;
+      const step = 50;
+      progressInterval = setInterval(() => {
+        if (cancelled) return;
+        progressWidth += (step / totalMs) * 100;
+        bar.style.width = Math.min(progressWidth, 100) + '%';
+      }, step);
+
+      countdownInterval = setInterval(() => {
+        if (cancelled) return clearInterval(countdownInterval);
+        seconds--;
+        countEl.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(countdownInterval);
+          clearInterval(progressInterval);
+          if (!cancelled && currentURL) {
+            window.location.href = currentURL;
+          }
+        }
+      }, 1000);
+    }
+
+    function handleGo(e) {
+      e.preventDefault();
+      if (!currentURL) return;
+      window.open(currentURL, '_blank', 'noopener');
+      cancelRedirect(true);
+    }
+
+    function cancelRedirect(silent) {
       cancelled = true;
-      document.querySelector('.countdown').innerHTML = '<span style="color:var(--muted)">Auto-redirect cancelled.</span>';
-      document.getElementById('bar').style.animationPlayState = 'paused';
+      clearInterval(countdownInterval);
+      clearInterval(progressInterval);
+      if (!silent) {
+        document.getElementById('countdown-area').innerHTML =
+          '<span style="color:var(--muted)">Auto-redirect cancelled.</span>';
+        document.getElementById('hint-text').textContent = 'Click "Open Now" to proceed manually.';
+      }
     }
   </script>
 </body>
